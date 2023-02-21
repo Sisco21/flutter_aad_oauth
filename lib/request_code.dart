@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart'
-    show MaterialPageRoute, Navigator, SafeArea;
+    show MaterialPageRoute, Navigator, SafeArea, Scaffold, TextButton;
 import 'package:flutter/widgets.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // #docregion platform_imports
@@ -137,7 +137,23 @@ class RequestCode {
     var token = uri.queryParameters['code'];
     if (token != null) {
       _onCodeListener.add(token);
-      Navigator.of(_config.context!, rootNavigator: true).pop();
+      if (Navigator.of(_config.context!).canPop()) {
+        Navigator.of(_config.context!, rootNavigator: true).pop();
+      } else {
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: Scaffold(
+            body: Container(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(_config.context!).pop();
+                },
+                child: Text('Go back'),
+              ),
+            ),
+          ),
+        );
+      }
     }
   }
 
