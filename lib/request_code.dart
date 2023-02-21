@@ -53,6 +53,14 @@ class RequestCode {
             debugPrint('Page finished loading: $url');
             _getUrlData(url);
           },
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith(config.redirectUri)) {
+              debugPrint('blocking navigation to ${request.url}');
+              return NavigationDecision.prevent;
+            }
+            debugPrint('allowing navigation to ${request.url}');
+            return NavigationDecision.navigate;
+          },
           onWebResourceError: (WebResourceError error) {
             debugPrint('''
             Page resource error:
