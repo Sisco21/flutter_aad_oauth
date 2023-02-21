@@ -9,7 +9,8 @@ import 'model/token.dart';
 import 'request/authorization_request.dart';
 
 class RequestTokenWeb {
-  final StreamController<Map<String, String>> _onCodeListener = StreamController();
+  final StreamController<Map<String, String>> _onCodeListener =
+      StreamController();
   final Config _config;
   late AuthorizationRequest _authorizationRequest;
   html.WindowBase? _popupWin;
@@ -24,7 +25,8 @@ class RequestTokenWeb {
     late Token token;
     final String urlParams = _constructUrlParams();
     if (_config.context != null) {
-      String initialURL = ('${_authorizationRequest.url}?$urlParams').replaceAll(' ', '%20');
+      String initialURL =
+          ('${_authorizationRequest.url}?$urlParams').replaceAll(' ', '%20');
 
       _webAuth(initialURL);
     } else {
@@ -47,7 +49,8 @@ class RequestTokenWeb {
         throw Exception('Access denied or authentication canceled.');
       }
     });
-    _popupWin = html.window.open(initialURL, 'Microsoft Auth', 'width=800, height=900, scrollbars=yes');
+    _popupWin = html.window.open(
+        initialURL, 'Microsoft Auth', 'width=800, height=900, scrollbars=yes');
   }
 
   _getUrlData(String _url) {
@@ -56,7 +59,8 @@ class RequestTokenWeb {
 
     if (uri.queryParameters['error'] != null) {
       _closeWebWindow();
-      _onCodeListener.addError(Exception('Access denied or authentication canceled.'));
+      _onCodeListener
+          .addError(Exception('Access denied or authentication canceled.'));
     }
 
     var token = uri.queryParameters;
@@ -73,16 +77,19 @@ class RequestTokenWeb {
   }
 
   Future<void> clearCookies() async {
-    await CookieManager().clearCookies();
+    // await CookieManager().clearCookies();
   }
 
-  Stream<Map<String, String>> get _onCode => _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
+  Stream<Map<String, String>> get _onCode =>
+      _onCodeStream ??= _onCodeListener.stream.asBroadcastStream();
 
-  String _constructUrlParams() => _mapToQueryParams(_authorizationRequest.parameters);
+  String _constructUrlParams() =>
+      _mapToQueryParams(_authorizationRequest.parameters);
 
   String _mapToQueryParams(Map<String, String> params) {
     final queryParams = <String>[];
-    params.forEach((String key, String value) => queryParams.add('$key=$value'));
+    params
+        .forEach((String key, String value) => queryParams.add('$key=$value'));
     return queryParams.join('&');
   }
 
