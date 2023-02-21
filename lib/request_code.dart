@@ -129,7 +129,7 @@ class RequestCode {
     Uri uri = Uri.parse(url);
 
     if (uri.queryParameters['error'] != null) {
-      Navigator.of(_config.context!, rootNavigator: true).maybePop();
+      Navigator.of(_config.context!, rootNavigator: true).pop();
       _onCodeListener
           .addError(Exception('Access denied or authentication canceled.'));
     }
@@ -137,7 +137,7 @@ class RequestCode {
     var token = uri.queryParameters['code'];
     if (token != null) {
       _onCodeListener.add(token);
-      Navigator.of(_config.context!, rootNavigator: true).maybePop();
+      Navigator.of(_config.context!, rootNavigator: true).pop();
     }
   }
 
